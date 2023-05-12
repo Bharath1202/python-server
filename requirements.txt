@@ -1,0 +1,9 @@
+
+fastapi
+jose
+pydantic
+python-jose
+pyodbc
+Flask
+waitress
+flask_cors
