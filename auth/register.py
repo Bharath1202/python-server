@@ -1,13 +1,13 @@
 from service import database
 from pyodbc import Error
 from flask import request, make_response
-from helpers import token
 from helpers import commonErrors
-
+import cryptocode
 for i in commonErrors.errors:
     register = i['success']['register']
     login = i['success']['login']
     error = i['error']['exists']
+
 pmsql = database.database()
 cursor = pmsql.cursor()
 emailArray = []
@@ -24,7 +24,11 @@ except Error as e:
 
 def reg():
     try:
-        table = f"""create table register(userName varchar(20), email varchar(20), password varchar(50), mobileNumber varchar(10))"""
+        table = f"""create table register(
+        userName varchar(20),
+        email varchar(50) , 
+        password varchar(100), 
+        mobileNumber varchar(10))"""
         cursor.execute(table)
         cursor.commit()
     except Error as e:
@@ -34,8 +38,8 @@ def reg():
     userName = res['userName']
     email = res['email']
     password = res['password']
+    hash_password = cryptocode.encrypt(password,"password")
     mobileNumber = int(res['mobile'])
-    access = token.create_access_token(data={'email': email})
     if email == "admin@gmail.com":
         loginType = 'admin'
     else:
@@ -47,7 +51,7 @@ def reg():
     }
     try:
         if len(emailArray) == 0:
-            insert = f"""insert into register(username,email,password,mobileNumber) values('{userName}','{email}','{password}',{mobileNumber})"""
+            insert = f"""insert into register(userName,email,password,mobileNumber) values('{userName}','{email}','{hash_password}',{mobileNumber})"""
             cursor.execute(insert)
             cursor.commit()
             response = make_response({'response': register})
@@ -61,7 +65,7 @@ def reg():
         return response
     try:
         if not email in emailArray:
-            insert = f"""insert into register(username,email,password,mobileNumber) values('{userName}','{email}','{password}',{mobileNumber})"""
+            insert = f"""insert into register(userName,email,password,mobileNumber) values('{userName}','{email}','{hash_password}',{mobileNumber})"""
             cursor.execute(insert)
             cursor.commit()
             response = make_response({'response': register})

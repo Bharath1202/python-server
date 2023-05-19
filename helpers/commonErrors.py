@@ -1,10 +1,14 @@
 errors=[{
     "success":{
         "register":"Register Successfully",
-        "login":"Login Successsfully"
+        "login":"Login Successsfully",
+        "reset":"Password Reset Successsfully"
     },
     "error":{
         "exists":"Already Exists",
-        'invalidEmail':'Invalid Email'
+        "verify":"Please verify your email or password",
+        'invalidEmail':'Invalid Email',
+        "notRegister":"Email ID is not Registered",
+        "notMatch":"Password doesn't match"
     }
 }]
