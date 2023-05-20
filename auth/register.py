@@ -54,13 +54,13 @@ def reg():
             insert = f"""insert into register(userName,email,password,mobileNumber) values('{userName}','{email}','{hash_password}',{mobileNumber})"""
             cursor.execute(insert)
             cursor.commit()
-            response = make_response({'response': register})
+            response = make_response({'result': register})
             response.status_code = 200
             return response
         else:
             print('out')
     except Error as err:
-        response = make_response({'error': err})
+        response = make_response({'result': err})
         response.status_code = 409
         return response
     try:
@@ -68,11 +68,11 @@ def reg():
             insert = f"""insert into register(userName,email,password,mobileNumber) values('{userName}','{email}','{hash_password}',{mobileNumber})"""
             cursor.execute(insert)
             cursor.commit()
-            response = make_response({'response': register})
+            response = make_response({'result': register})
             response.status_code = 200
             return response
     except Error as err:
-        response = make_response({'error': err})
+        response = make_response({'result': err})
         response.status_code = 409
         return response
     return data

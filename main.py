@@ -52,7 +52,10 @@ def opt():
     otpReturn = resetPassword.opt()
     return otpReturn
 
+
 call()
+
+
 @app.route('/newPassword', methods=['POST'])
 def newPass():
     newPasswordReturn = newpassword.newPassword()
