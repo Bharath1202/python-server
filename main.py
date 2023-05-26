@@ -5,6 +5,7 @@ from service import database
 from auth import register, login, resetPassword, newpassword
 import pandas as pd
 import datetime
+from account import accountRegister
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -60,6 +61,12 @@ call()
 def newPass():
     newPasswordReturn = newpassword.newPassword()
     return newPasswordReturn
+
+
+@app.route('/accountRegister', methods=['POST'])
+def newAcc():
+    newAccountRegister = accountRegister.newAccountRegister()
+    return newAccountRegister
 
 
 if __name__ == "__main__":
