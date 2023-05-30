@@ -47,7 +47,6 @@ def newAccountRegister():
     try:
         if len(getAccountArray) > 0:
             for i in getAccountArray:
-                print('in')
                 if not i[5] in mobile:
                     insert_table = f"""insert into account_Register(firstName,lastName,age,gender,email,mobileNumber,address,
                               nationality,religion) values('{fname}','{lname}','{age}','{gender}','{email1}','{mobile}','{address}',

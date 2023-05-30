@@ -6,6 +6,8 @@ from auth import register, login, resetPassword, newpassword
 import pandas as pd
 import datetime
 from account import accountRegister
+import game
+from pyodbc import Error
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -33,6 +35,20 @@ def call():
         else:
             print('out')
     Timer(5, call).start()
+
+
+def getGameData():
+    gameData = f"""select * from gameTable"""
+    cursor.execute(gameData)
+    data = cursor.fetchall()
+    for i in data:
+        try:
+            if len(i) > 0:
+                return i
+            else:
+                print('out')
+        except Error as e:
+            print(e)
 
 
 @app.route('/register', methods=['POST'])
@@ -67,6 +83,33 @@ def newPass():
 def newAcc():
     newAccountRegister = accountRegister.newAccountRegister()
     return newAccountRegister
+
+
+def gameList():
+    returnGame = game.Timers().callColor()
+    Timer(5, gameList).start()
+
+
+gameList()
+
+
+@app.route('/game', methods=['GET'])
+def g():
+    gameData = f"""select * from gameTable"""
+    cursor.execute(gameData)
+    data = cursor.fetchall()
+    try:
+        for i in data:
+            if len(i) > 0:
+                print('iii', i)
+                return i
+            else:
+                print('out')
+    except Error as e:
+        print('oo',e)
+        return e
+    data={'j':'h'}
+    return data
 
 
 if __name__ == "__main__":
