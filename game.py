@@ -20,7 +20,7 @@ class Timers(object):
         self.price = '102'
         self.priceNumber = 0
         self.time()
-        self.callColor()
+        # self.callColor()
 
     def time(self):
         date = datetime.now().utctimetuple()
@@ -33,10 +33,11 @@ class Timers(object):
         self.finalDate = f"{dateFormat}{self.number}"
         r = randint(0,100)
         self.totalPrice = f"102{r}"
-        Timer(5, self.time).start()
+        Timer(1, self.time).start()
 
     def callColor(self):
-        number = randint(1,9)
+        number = randint(0,9)
+        print(number)
         if number % 2 == 0:
             self.color = '#00FF00'
             self.priceData = f"{self.totalPrice}{number}"
@@ -46,23 +47,23 @@ class Timers(object):
                 "number": number,
                 "color": self.color
             }
+            insert_period_table = f"""insert into gameTable(date,price,number,result) values('{self.finalDate}','{self.priceData}','{number}','{self.color}')"""
+            cursor.execute(insert_period_table)
+            cursor.commit()
             return response
         else:
             self.color = '#ff0000'
             self.priceData = f"{self.totalPrice}{number}"
-        Timer(5, self.callColor).start()
+        Timer(1, self.callColor).start()
         response = {
             "date": self.finalDate,
             "price": self.priceData,
             "number": number,
             "color": self.color
         }
-        try:
-            insert_period_table = f"""insert into gameTable(date,price,number,result) values('{self.finalDate}','{self.priceData}','{self.number}','{self.color}')"""
-            cursor.execute(insert_period_table)
-            cursor.commit()
-        except Error as e:
-            print('uuu',e)
+        insert_period_table = f"""insert into gameTable(date,price,number,result) values('{self.finalDate}','{self.priceData}','{number}','{self.color}')"""
+        cursor.execute(insert_period_table)
+        cursor.commit()
         return response
 
 data = Timers()

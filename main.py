@@ -9,6 +9,7 @@ from account import accountRegister
 import game
 from pyodbc import Error
 
+newArray = []
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
@@ -87,7 +88,7 @@ def newAcc():
 
 def gameList():
     returnGame = game.Timers().callColor()
-    Timer(5, gameList).start()
+    Timer(1, gameList).start()
 
 
 gameList()
@@ -95,22 +96,21 @@ gameList()
 
 @app.route('/game', methods=['GET'])
 def g():
+    global list_data
     gameData = f"""select * from gameTable"""
     cursor.execute(gameData)
-    data = cursor.fetchall()
-    try:
-        for i in data:
-            if len(i) > 0:
-                print('iii', i)
-                return i
-            else:
-                print('out')
-    except Error as e:
-        print('oo',e)
-        return e
-    data={'j':'h'}
+    data1 = cursor.fetchall()
+    for i in data1:
+        list_data = {
+            'date' : i[0],
+            'price':i[1],
+            'number': i[2],
+            'color': i[3]
+        }
+        newArray.append(list_data)
+    print(newArray)
+    data = {'res': newArray}
     return data
-
 
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=3070)
