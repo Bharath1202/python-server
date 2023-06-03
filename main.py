@@ -86,31 +86,5 @@ def newAcc():
     return newAccountRegister
 
 
-def gameList():
-    returnGame = game.Timers().callColor()
-    Timer(1, gameList).start()
-
-
-gameList()
-
-
-@app.route('/game', methods=['GET'])
-def g():
-    global list_data
-    gameData = f"""select * from gameTable"""
-    cursor.execute(gameData)
-    data1 = cursor.fetchall()
-    for i in data1:
-        list_data = {
-            'date' : i[0],
-            'price':i[1],
-            'number': i[2],
-            'color': i[3]
-        }
-        newArray.append(list_data)
-    print(newArray)
-    data = {'res': newArray}
-    return data
-
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=3070)
