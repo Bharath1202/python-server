@@ -2,19 +2,24 @@ from flask import request, make_response
 from service import database
 from pyodbc import Error
 from helpers import commonErrors
+from random_object_id import generate
+
+id = generate()
 
 for i in commonErrors.errors:
     register = i['success']['register']
     login = i['success']['login']
     error = i['error']['exists']
+    status = i['success']['status']
 
 pmsql = database.database()
 cursor = pmsql.cursor()
 getAccountArray = []
 try:
-    create_new_account = f"""create table account_Register(firstName varchar(15),lastName varchar(4),age varchar(2), 
-    gender varchar(7), email varchar(30), mobileNumber varchar(10),alternateNumber varchar(10) ,address varchar(500), nationality varchar(10), 
-    religion varchar(10),pincode varchar(6),userImage varchar(170))"""
+    create_new_account = f"""create table account_Register(_id varchar (40),firstName varchar(15),lastName varchar(
+    4),age varchar(2), dateOfBirth varchar(20), gender varchar(7), email varchar(30), mobileNumber varchar(10),
+    alternateNumber varchar(10) ,martialStatus varchar(10),address varchar(500), nationality varchar(10), 
+    religion varchar(10),pincode varchar(6),userImage varchar(170),status varchar(10))"""
     cursor.execute(create_new_account)
     cursor.commit()
 except Error as e:
@@ -24,6 +29,8 @@ except Error as e:
 
 def newAccountRegister():
     global status_code
+    global response1
+    global response2
     try:
         getAccount = f"""select * from account_Register"""
         cursor.execute(getAccount)
@@ -36,49 +43,58 @@ def newAccountRegister():
     fname = res['firstName']
     lname = res['lastName']
     age = res['age']
+    date = res['dateOfBirth']
+    year = date['year']
+    month = date['month']
+    day = date['day']
+    dateOfBirth = f"{year}-{month}-{day}"
     gender = res['gender']
     email1 = res['email']
     mobile = res['mobileNo']
     alternate = res['alternateNo']
+    martialStatus = res['martialStatus']
     address = res['address']
     nationality = res['nationality']
     religion = res['religion']
     pincode = res['pinCode']
     userImage = res['userImage']
+    status = 'pending'
     try:
         if len(getAccountArray) == 0:
-            insert_table = f"""insert into account_Register(firstName,lastName,age,gender,email,mobileNumber,alternateNumber,address,
-            nationality,religion,pincode,userImage) values('{fname}','{lname}','{age}','{gender}','{email1}','{mobile}','{alternate}','{address}',
-            '{nationality}','{religion}','{pincode}','{userImage}')"""
+            insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,email,
+            mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
+            status) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}','{mobile}',
+            '{alternate}','{martialStatus}','{address}',
+            '{nationality}','{religion}','{pincode}','{userImage}','{status}')"""
             cursor.execute(insert_table)
             cursor.commit()
+            response1 = make_response({'success': register})
+            response1.status_code = 200
+            return response1
     except Error as e:
         print(e)
     try:
         if len(getAccountArray) > 0:
             for i in getAccountArray:
                 if not i[5] in mobile:
-                    insert_table = f"""insert into account_Register(firstName,lastName,age,gender,email,mobileNumber,alternateNumber,address,
-                              nationality,religion,pincode,userImage) values('{fname}','{lname}','{age}','{gender}','{email1}','{mobile}','{alternate}','{address}',
-                              '{nationality}','{religion}','{pincode}','{userImage}')"""
+                    insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,
+                    email,mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
+                    status) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}',
+                    '{mobile}','{alternate}','{martialStatus}','{address}',
+                              '{nationality}','{religion}','{pincode}','{userImage}','{status}')"""
                     cursor.execute(insert_table)
                     cursor.commit()
-                    response = make_response({'success':register},{register:register})
-                    response.status_code = 200
-                    status_code=response.status_code
-                    return response
+                    response1 = make_response({'success':register})
+                    response1.status_code = 200
+                    return response1
                 else:
-                    response = make_response({'error':error})
-                    response.status_code = 403
-                    status_code=response.status_code
-                    return response
+                    response2 = make_response({'error':error})
+                    response2.status_code = 403
+                    status_code=response2.status_code
+                    return response2
         else:
             print('no Account')
     except Error as e:
         print(e)
-    if status_code == 200:
-        data = {'result':register}
-        return data
-    else:
-        data = {'result': error}
-        return data
+    data= {'res':"response1"}
+    return data

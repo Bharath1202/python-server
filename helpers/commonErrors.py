@@ -2,7 +2,8 @@ errors=[{
     "success":{
         "register":"Register Successfully",
         "login":"Login Successsfully",
-        "reset":"Password Reset Successsfully"
+        "reset":"Password Reset Successsfully",
+        "status":"Status Updated"
     },
     "error":{
         "exists":"Already Exists",

@@ -1,14 +1,13 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from waitress import serve
 from service import database
 from auth import register, login, resetPassword, newpassword
 import pandas as pd
 import datetime
-from account import accountRegister
-import game
+from account import accountRegister, getRegisterAccount, accountStatus
 from pyodbc import Error
-
+from helpers import commonErrors
 newArray = []
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -17,6 +16,9 @@ pmsql = database.database()
 cursor = pmsql.cursor()
 
 from threading import Timer
+
+for i in commonErrors.errors:
+    status = i['success']['status']
 
 
 def call():
@@ -38,24 +40,23 @@ def call():
     Timer(5, call).start()
 
 
-def getGameData():
-    gameData = f"""select * from gameTable"""
-    cursor.execute(gameData)
-    data = cursor.fetchall()
-    for i in data:
-        try:
-            if len(i) > 0:
-                return i
-            else:
-                print('out')
-        except Error as e:
-            print(e)
+# def getGameData():
+#     gameData = f"""select * from gameTable"""
+#     cursor.execute(gameData)
+#     data = cursor.fetchall()
+#     for i in data:
+#         try:
+#             if len(i) > 0:
+#                 return i
+#             else:
+#                 print('out')
+#         except Error as e:
+#             print(e)
 
 
 @app.route('/register', methods=['POST'])
 def registerForm():
     returnData = register.reg()
-    print(returnData)
     return returnData
 
 
@@ -84,6 +85,24 @@ def newPass():
 def newAcc():
     newAccountRegister = accountRegister.newAccountRegister()
     return newAccountRegister
+
+
+@app.route('/getAccount', methods=['GET'])
+def getAllRegisterAccount():
+    returnGetAccount = getRegisterAccount.getRegisterAcc()
+    return returnGetAccount
+
+
+@app.route('/getSingleAccount', methods=['PUT'])
+def getSingle():
+    returnAccountDetail = getRegisterAccount.getSingleAccount()
+    return returnAccountDetail
+
+
+@app.route('/changeStatus', methods=['POST'])
+def status():
+    returnStatus = accountStatus.changeStatus()
+    return returnStatus
 
 
 if __name__ == "__main__":
