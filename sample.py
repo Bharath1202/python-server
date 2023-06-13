@@ -21,13 +21,13 @@ e['From'] = "noheavenforyours@gmail.com"
 e['To'] = "guganathanyogi1997@gmail.com"
 e['subject'] = 'We track you'
 i = 0
-for email in emailArray:
-    for i in range(1000):
-        body = f"""{'😈'}"""
-        e.set_content(body)
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smpt:
-            smpt.login(sender_email, appPassword)
-            smpt.sendmail(sender_email, email, e.as_string())
+# for email in emailArray:
+for i in range(1):
+    body = f"""{'😈'}"""
+    e.set_content(body)
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smpt:
+        smpt.login(sender_email, appPassword)
+        smpt.sendmail(sender_email, g, e.as_string())
 
 # def notify():
 #     while True:

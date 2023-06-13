@@ -3,9 +3,9 @@ from service import database
 from pyodbc import Error
 from helpers import commonErrors
 from random_object_id import generate
-
+from datetime import datetime
 id = generate()
-
+date = datetime.now()
 for i in commonErrors.errors:
     register = i['success']['register']
     login = i['success']['login']
@@ -17,9 +17,9 @@ cursor = pmsql.cursor()
 getAccountArray = []
 try:
     create_new_account = f"""create table account_Register(_id varchar (40),firstName varchar(15),lastName varchar(
-    4),age varchar(2), dateOfBirth varchar(20), gender varchar(7), email varchar(30), mobileNumber varchar(10),
+    4),age varchar(2), dateOfBirth varchar(30), gender varchar(7), email varchar(30), mobileNumber varchar(10),
     alternateNumber varchar(10) ,martialStatus varchar(10),address varchar(500), nationality varchar(10), 
-    religion varchar(10),pincode varchar(6),userImage varchar(170),status varchar(10))"""
+    religion varchar(10),pincode varchar(6),userImage varchar(170),status varchar(10),activationDate varchar(50))"""
     cursor.execute(create_new_account)
     cursor.commit()
 except Error as e:
@@ -43,11 +43,7 @@ def newAccountRegister():
     fname = res['firstName']
     lname = res['lastName']
     age = res['age']
-    date = res['dateOfBirth']
-    year = date['year']
-    month = date['month']
-    day = date['day']
-    dateOfBirth = f"{year}-{month}-{day}"
+    dateOfBirth = res['dateOfBirth']
     gender = res['gender']
     email1 = res['email']
     mobile = res['mobileNo']
@@ -59,13 +55,14 @@ def newAccountRegister():
     pincode = res['pinCode']
     userImage = res['userImage']
     status = 'pending'
+    currentDate = datetime.now()
     try:
         if len(getAccountArray) == 0:
             insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,email,
             mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
-            status) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}','{mobile}',
+            status,activationDate) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}','{mobile}',
             '{alternate}','{martialStatus}','{address}',
-            '{nationality}','{religion}','{pincode}','{userImage}','{status}')"""
+            '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}')"""
             cursor.execute(insert_table)
             cursor.commit()
             response1 = make_response({'success': register})
@@ -79,9 +76,9 @@ def newAccountRegister():
                 if not i[5] in mobile:
                     insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,
                     email,mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
-                    status) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}',
+                    status,activationDate) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}',
                     '{mobile}','{alternate}','{martialStatus}','{address}',
-                              '{nationality}','{religion}','{pincode}','{userImage}','{status}')"""
+                              '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}')"""
                     cursor.execute(insert_table)
                     cursor.commit()
                     response1 = make_response({'success':register})
