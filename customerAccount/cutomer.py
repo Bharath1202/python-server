@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from flask import request, make_response
 from service import database
 from pyodbc import Error
 from helpers import commonErrors
 from random_object_id import generate
+import pandas as pd
 
 id = generate()
 
@@ -28,38 +31,48 @@ except Error as e:
 
 
 def newcustomerAcc():
+    global customerId
+    global verifyDate
     res = request.json
-    print(res)
+    id = res['_id']
+    print(id)
+    try:
+        getData = f"""select * from account_Register where _id='{id}'"""
+        cursor.execute(getData)
+        customerId = cursor.fetchall()
+        for i in customerId:
+            registerDate = i[16]
+            date = pd.Timestamp(registerDate)
+            verifyDate = pd.Timedelta(datetime.now() - date).seconds / 86400
+    except Error as e:
+        print(e)
+
     fname = res['firstName']
     lname = res['lastName']
     age = res['age']
-    date = res['dateOfBirth']
-    year = date['year']
-    month = date['month']
-    day = date['day']
-    dateOfBirth = f"{year}-{month}-{day}"
+    dateOfBirth = res['dateOfBirth']
     gender = res['gender']
     email1 = res['email']
-    mobile = res['mobileNo']
-    alternate = res['alternateNo']
+    mobile = res['mobileNumber']
+    alternate = res['alternateNumber']
     martialStatus = res['martialStatus']
     address = res['address']
     nationality = res['nationality']
     religion = res['religion']
-    pincode = res['pinCode']
+    pincode = res['pincode']
     userImage = res['userImage']
     bankName = res['bankName']
     bankAccNo = res['accountNumber']
     ifscCode = res['ifscCode']
+    currentDate = datetime.now()
     status = 'In-progress'
-    data= {'g':'gg'}
-    return data
+
     # try:
-    #     insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,email,
-    #           mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
-    #           status,activationDate) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}','{mobile}',
-    #           '{alternate}','{martialStatus}','{address}',
-    #           '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}')"""
+    #     insert_table = f"""insert into customer_account(_id,firstName,lastName,age,dateOfBirth,gender,email,
+    #              mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
+    #              status,activationDate) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}','{mobile}',
+    #              '{alternate}','{martialStatus}','{address}',
+    #              '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}')"""
     #     cursor.execute(insert_table)
     #     cursor.commit()
     #     response1 = make_response({'success': register})
@@ -67,3 +80,6 @@ def newcustomerAcc():
     #     return response1
     # except Error as e:
     #     print(e)
+
+    data = {'g': 'gg'}
+    return data

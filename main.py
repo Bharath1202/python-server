@@ -9,7 +9,7 @@ from account import accountRegister, getRegisterAccount, accountStatus
 from pyodbc import Error
 from helpers import commonErrors
 from customerAccount import cutomer
-
+from datetime import  datetime
 newArray = []
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -41,7 +41,25 @@ def call():
             print('out')
     Timer(5, call).start()
 
-
+def verify():
+    try:
+        getData = f"""select * from account_Register"""
+        cursor.execute(getData)
+        customerId = cursor.fetchall()
+        for i in customerId:
+            id = i[0]
+            registerDate = i[16]
+            date = pd.Timestamp(registerDate)
+            verifyDate = pd.Timedelta(datetime.now() - date).seconds / 30
+            print(verifyDate)
+            if verifyDate > 2792:
+                dataBase = f"""update customer_account set status='verify' where _id='{id}'"""
+                cursor.execute(dataBase)
+                cursor.commit()
+    except Error as e:
+        print(e)
+    Timer(5, verify).start()
+verify()
 # def getGameData():
 #     gameData = f"""select * from gameTable"""
 #     cursor.execute(gameData)
