@@ -8,8 +8,9 @@ import datetime
 from account import accountRegister, getRegisterAccount, accountStatus
 from pyodbc import Error
 from helpers import commonErrors
-from customerAccount import cutomer
-from datetime import  datetime
+from customerAccount import cutomer, getCustomerAccount
+from datetime import datetime
+
 newArray = []
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -41,6 +42,7 @@ def call():
             print('out')
     Timer(5, call).start()
 
+
 def verify():
     try:
         getData = f"""select * from account_Register"""
@@ -59,7 +61,9 @@ def verify():
     except Error as e:
         print(e)
     Timer(5, verify).start()
-verify()
+
+
+# verify()
 # def getGameData():
 #     gameData = f"""select * from gameTable"""
 #     cursor.execute(gameData)
@@ -128,8 +132,18 @@ def status():
 @app.route('/customerAccount', methods=['POST'])
 def customerAcc():
     returnCustomerAccount = cutomer.newcustomerAcc()
-    print(returnCustomerAccount)
     return returnCustomerAccount
+
+
+@app.route('/getAllCustomerAccount', methods=['GET'])
+def getCusAcc():
+    getCustomerAcc = getCustomerAccount.getRegisterCsutomerAcc()
+    return getCustomerAcc
+
+
+def getSingleCusAcc():
+    getSingleCustomerAcc = getCustomerAccount.getSingleCustomerAccount()
+    return getSingleCustomerAcc
 
 
 if __name__ == "__main__":
