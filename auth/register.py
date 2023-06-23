@@ -2,6 +2,8 @@ from service import database
 from pyodbc import Error
 from flask import request, make_response
 from helpers import commonErrors
+from random_object_id import generate
+id = generate()
 import cryptocode
 for i in commonErrors.errors:
     register = i['success']['register']
@@ -25,6 +27,7 @@ except Error as e:
 def reg():
     try:
         table = f"""create table register(
+        _id varchar(40),
         userName varchar(20),
         email varchar(50) , 
         password varchar(100), 
@@ -51,7 +54,7 @@ def reg():
     }
     try:
         if len(emailArray) == 0:
-            insert = f"""insert into register(userName,email,password,mobileNumber) values('{userName}','{email}','{hash_password}',{mobileNumber})"""
+            insert = f"""insert into register(_id,userName,email,password,mobileNumber) values('{id}','{userName}','{email}','{hash_password}',{mobileNumber})"""
             cursor.execute(insert)
             cursor.commit()
             response = make_response({'result': register})
@@ -65,7 +68,7 @@ def reg():
         return response
     try:
         if not email in emailArray:
-            insert = f"""insert into register(userName,email,password,mobileNumber) values('{userName}','{email}','{hash_password}',{mobileNumber})"""
+            insert = f"""insert into register(_id,userName,email,password,mobileNumber) values('{id}','{userName}','{email}','{hash_password}',{mobileNumber})"""
             cursor.execute(insert)
             cursor.commit()
             response = make_response({'result': register})

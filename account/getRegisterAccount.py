@@ -46,10 +46,11 @@ def getSingleAccount():
         res = request.json
         value = res['param']['updates']
         for i in value:
-            id = i['value']
+            id = i['param']
             getData = f"""select * from account_Register where _id='{id}'"""
             cursor.execute(getData)
             detail = cursor.fetchall()
+            print(detail)
             for i in detail:
                 res = {
                     "_id": i[0],

@@ -18,42 +18,76 @@ for i in commonErrors.errors:
 
 def loginForm():
     global responseEmail, responsePassword
+    userData = []
     res = request.json
     email = res['email']
     password = res['password']
     loginType = ''
     try:
-        findData = f"""select * from register where email='{email}' """
-        cursor.execute(findData)
-        var = cursor.fetchall()
-        for i in var:
-            responseEmail = i[1]
-            decodePassword = i[2]
-            responsePassword = cryptocode.decrypt(decodePassword, "password")
-            if responseEmail == "admin@gmail.com":
-                loginType = 'admin'
-            else:
-                loginType = "user"
-        if len(var) > 0:
-            if responseEmail == email and responsePassword == password:
-                access = token.create_access_token(data={'email': email})
-                responseData = {
-                    "userDetails": email,
-                    "token": access,
-                    "tokenType": 'Bearer',
-                    "loginType": loginType
+        if email == "admin@gmail.com":
+            loginType = 'admin'
+            findData = f"""select * from register where email='{email}' """
+            cursor.execute(findData)
+            var = cursor.fetchall()
+            for i in var:
+                user = {
+                    '_id': i[0],
+                    'name': i[1],
+                    'email': i[2],
+                    'mobile': i[4],
                 }
-                response = make_response({'result': responseData})
-                response.status_code = 200
-                return response
-            else:
-                response = make_response({'result': verify})
-                response.status_code = 403
-                return response
+                userData.append(user)
+                responseEmail = i[2]
+                decodePassword = i[3]
+                responsePassword = cryptocode.decrypt(decodePassword, "password")
+                if len(var) > 0:
+                    if responseEmail == email and responsePassword == password:
+                        access = token.create_access_token(data={'email': email})
+                        responseData = {
+                            "userDetails": userData,
+                            "token": access,
+                            "tokenType": 'Bearer',
+                            "loginType": loginType
+                        }
+                        print(responseData)
+                        response = make_response({'result': responseData})
+                        response.status_code = 200
+                        return response
+                    else:
+                        response = make_response({'result': verify})
+                        response.status_code = 403
+                        return response
+                else:
+                    response = make_response({'result': invalid})
+                    response.status_code = 400
+                    return response
         else:
-            response = make_response({'result': invalid})
-            response.status_code = 400
-            return response
+            loginType = "user"
+            findData = f"""select * from customer_account where email='{email}' """
+            cursor.execute(findData)
+            var = cursor.fetchall()
+            for i in var:
+                if len(var) > 0:
+                    if responseEmail == email and responsePassword == password:
+                        access = token.create_access_token(data={'email': email})
+                        responseData = {
+                            "userDetails": userData,
+                            "token": access,
+                            "tokenType": 'Bearer',
+                            "loginType": loginType
+                        }
+                        print(responseData)
+                        response = make_response({'result': responseData})
+                        response.status_code = 200
+                        return response
+                    else:
+                        response = make_response({'result': verify})
+                        response.status_code = 403
+                        return response
+                else:
+                    response = make_response({'result': invalid})
+                    response.status_code = 400
+                    return response
     except Error as e:
         response = make_response({'Invalid': invalid})
         response.status_code = 409

@@ -7,7 +7,7 @@ def changeStatus():
     res = request.json
     id = res['_id']
     status = res['status']
-    update = f"""update account_Register set status='{status}' where _id='{id}'"""
+    update = f"""update customer_account set status='{status}' where _id='{id}'"""
     cursor.execute(update)
     cursor.commit()
     response = make_response({'success': status})
