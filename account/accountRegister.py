@@ -17,7 +17,7 @@ cursor = pmsql.cursor()
 getAccountArray = []
 try:
     create_new_account = f"""create table account_Register(_id varchar (40),firstName varchar(15),lastName varchar(
-    4),age varchar(2), dateOfBirth varchar(30), gender varchar(7), email varchar(30), mobileNumber varchar(10),
+    4),age varchar(2), dateOfBirth varchar(30), gender varchar(7), email varchar(30), password varchar(50), mobileNumber varchar(10),
     alternateNumber varchar(10) ,martialStatus varchar(10),address varchar(500), nationality varchar(10), 
     religion varchar(10),pincode varchar(6),userImage varchar(170),status varchar(10),activationDate varchar(50))"""
     cursor.execute(create_new_account)
@@ -46,6 +46,7 @@ def newAccountRegister():
     dateOfBirth = res['dateOfBirth']
     gender = res['gender']
     email1 = res['email']
+    password = '123456'
     mobile = res['mobileNo']
     alternate = res['alternateNo']
     martialStatus = res['martialStatus']
@@ -60,9 +61,9 @@ def newAccountRegister():
         if len(getAccountArray) == 0:
             insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,email,
             mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
-            status,activationDate) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}','{mobile}',
+            status,activationDate,password) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}', '{mobile}',
             '{alternate}','{martialStatus}','{address}',
-            '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}')"""
+            '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}','{password}')"""
             cursor.execute(insert_table)
             cursor.commit()
             response1 = make_response({'success': register})
@@ -76,9 +77,9 @@ def newAccountRegister():
                 if not i[5] in mobile:
                     insert_table = f"""insert into account_Register(_id,firstName,lastName,age,dateOfBirth,gender,
                     email,mobileNumber,alternateNumber,martialStatus,address, nationality,religion,pincode,userImage,
-                    status,activationDate) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}',
+                    status,activationDate,password,) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}','{gender}','{email1}',
                     '{mobile}','{alternate}','{martialStatus}','{address}',
-                              '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}')"""
+                              '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}','{password}')"""
                     cursor.execute(insert_table)
                     cursor.commit()
                     response1 = make_response({'success':register})

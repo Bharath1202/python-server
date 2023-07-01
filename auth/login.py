@@ -67,8 +67,12 @@ def loginForm():
             cursor.execute(findData)
             var = cursor.fetchall()
             for i in var:
+                print(i)
+                userEmail = i[6]
+                userPassword = i[20]
+                print(userEmail)
                 if len(var) > 0:
-                    if responseEmail == email and responsePassword == password:
+                    if userEmail == email and userPassword == password:
                         access = token.create_access_token(data={'email': email})
                         responseData = {
                             "userDetails": userData,
@@ -92,3 +96,5 @@ def loginForm():
         response = make_response({'Invalid': invalid})
         response.status_code = 409
         return response
+    data={'f':'f'}
+    return data

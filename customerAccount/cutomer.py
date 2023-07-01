@@ -21,7 +21,7 @@ cursor = pmsql.cursor()
 
 try:
     create_new_account = f"""create table customer_account(_id varchar (40),firstName varchar(15),lastName varchar( 
-    4),age varchar(2), dateOfBirth varchar(30), gender varchar(7), email varchar(30), mobileNumber varchar(10), 
+    4),age varchar(2), dateOfBirth varchar(30), gender varchar(7), email varchar(30),password varchar(50), mobileNumber varchar(10), 
     alternateNumber varchar(10) ,martialStatus varchar(10),address varchar(500), nationality varchar(10), 
     religion varchar(10),pincode varchar(6),userImage varchar(170),status varchar(20),registerdDate varchar(30),
     bankName varchar(100), accountNumber varchar(16),ifscCode varchar(10))"""
@@ -58,6 +58,7 @@ def newcustomerAcc():
     dateOfBirth = res['dateOfBirth']
     gender = res['gender']
     email1 = res['email']
+    password = '123456'
     mobile = res['mobileNumber']
     alternate = res['alternateNumber']
     martialStatus = res['martialStatus']
@@ -72,10 +73,10 @@ def newcustomerAcc():
     currentDate = registerDate
     status = 'In-progress'
     try:
-        insert_table = f"""insert into customer_account(_id ,firstName,lastName,age,dateOfBirth,gender,email,
+        insert_table = f"""insert into customer_account(_id ,firstName,lastName,age,dateOfBirth,gender,email,password,
         mobileNumber, alternateNumber,martialStatus,address,nationality, religion,pincode,userImage,status,registerdDate,bankName,
         accountNumber,ifscCode) values('{id}','{fname}','{lname}','{age}','{dateOfBirth}',
-        '{gender}','{email1}','{mobile}',
+        '{gender}','{email1}','{password}', '{mobile}',
                  '{alternate}','{martialStatus}','{address}',
                  '{nationality}','{religion}','{pincode}','{userImage}','{status}','{currentDate}','{bankName}','{bankAccNo}','{ifscCode}')"""
         cursor.execute(insert_table)
