@@ -38,12 +38,12 @@
 # pen = canvas.sketch_from_svg('./service/surendhar.svg')
 # pen.draw()
 
-import power
-import psutil
-p = power.PowerManagement().get_providing_power_source_type()
-d = psutil.sensors_battery()
-while True:
-    print('pp')
-    if d.percent == 20:
-        print('in')
-        d.power_plugged = True
+# import power
+# import psutil
+# p = power.PowerManagement().get_providing_power_source_type()
+# d = psutil.sensors_battery()
+# while True:
+#     print('pp')
+#     if d.percent == 20:
+#         print('in')
+#         d.power_plugged = True

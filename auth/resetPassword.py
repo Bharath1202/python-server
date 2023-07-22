@@ -2,7 +2,6 @@ import smtplib
 import ssl
 from flask import request,make_response
 from service import database
-from pyodbc import Error
 from email.message import EmailMessage
 import uuid
 import random
@@ -19,7 +18,7 @@ try:
     create_otp = f"""create table OTP(ID varchar(50),otp varchar(4),validTime varchar(30))"""
     cursor.execute(create_otp)
     cursor.commit()
-except Error as e:
+except Exception as e:
     print(e)
 
 global validTimeId
@@ -64,7 +63,7 @@ def opt():
             response = make_response({'result': notRegister})
             response.status_code = 403
             return response
-    except Error as e:
+    except Exception as e:
         print(e)
     d = {'l':'o'}
     return d

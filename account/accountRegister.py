@@ -1,6 +1,5 @@
 from flask import request, make_response
 from service import database
-from pyodbc import Error
 from helpers import commonErrors
 from random_object_id import generate
 from datetime import datetime
@@ -22,7 +21,7 @@ try:
     religion varchar(10),pincode varchar(6),userImage varchar(170),status varchar(10),activationDate varchar(50))"""
     cursor.execute(create_new_account)
     cursor.commit()
-except Error as e:
+except Exception as e:
     print(e)
 
 
@@ -37,7 +36,7 @@ def newAccountRegister():
         data = cursor.fetchall()
         for i in data:
             getAccountArray.append(i)
-    except Error as e:
+    except Exception as e:
         print(e)
     res = request.json
     fname = res['firstName']
@@ -69,7 +68,7 @@ def newAccountRegister():
             response1 = make_response({'success': register})
             response1.status_code = 200
             return response1
-    except Error as e:
+    except Exception as e:
         print(e)
     try:
         if len(getAccountArray) > 0:
@@ -92,7 +91,7 @@ def newAccountRegister():
                     return response2
         else:
             print('no Account')
-    except Error as e:
+    except Exception as e:
         print(e)
     data= {'res':"response1"}
     return data

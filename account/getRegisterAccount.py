@@ -1,5 +1,4 @@
 from service import database
-from pyodbc import Error
 from flask import Flask, request
 
 pmsql = database.database()
@@ -34,7 +33,7 @@ def getRegisterAcc():
             accArray.append(res)
         data = {'result': accArray}
         return data
-    except Error as e:
+    except Exception as e:
         print(e)
     value = {'res': 'response'}
     return value
@@ -73,7 +72,7 @@ def getSingleAccount():
             singleAccArray.append(res)
             data = {'result': singleAccArray}
             return data
-    except Error as e:
+    except Exception as e:
         print(e)
     data = {'result': 'response'}
     return data

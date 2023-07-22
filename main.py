@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask
 from flask_cors import CORS
 from waitress import serve
 from service import database
@@ -6,7 +6,6 @@ from auth import register, login, resetPassword, newpassword
 import pandas as pd
 import datetime
 from account import accountRegister, getRegisterAccount, accountStatus
-from pyodbc import Error
 from helpers import commonErrors
 from customerAccount import cutomer, getCustomerAccount
 from datetime import datetime
@@ -58,7 +57,7 @@ def verify():
                 dataBase = f"""update customer_account set status='verify' where _id='{id}'"""
                 cursor.execute(dataBase)
                 cursor.commit()
-    except Error as e:
+    except Exception as e:
         print(e)
     Timer(5, verify).start()
 

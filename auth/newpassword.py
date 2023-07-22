@@ -1,7 +1,6 @@
 from flask import request,make_response
 from service import database
 from helpers import commonErrors
-from pyodbc import Error
 
 pmsql = database.database()
 cursor = pmsql.cursor()
@@ -30,7 +29,7 @@ def newPassword():
                 response = make_response({'result': notMarch})
                 response.status_code = 403
                 return response
-    except Error as e:
+    except Exception as e:
         print(e)
     data = {'r':'k'}
     return data

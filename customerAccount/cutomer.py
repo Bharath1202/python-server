@@ -1,12 +1,7 @@
-from datetime import datetime
-
 from flask import request, make_response
 from service import database
-from pyodbc import Error
 from helpers import commonErrors
 from random_object_id import generate
-
-import pandas as pd
 
 id = generate()
 
@@ -27,7 +22,7 @@ try:
     bankName varchar(100), accountNumber varchar(16),ifscCode varchar(10))"""
     cursor.execute(create_new_account)
     cursor.commit()
-except Error as e:
+except Exception as e:
     print(e)
 
 
@@ -49,7 +44,7 @@ def newcustomerAcc():
             print(registerDate)
             # date = pd.Timestamp(registerDate)
             # verifyDate = pd.Timedelta(datetime.now() - date).seconds / 86400
-    except Error as e:
+    except Exception as e:
         print(e)
 
     fname = res['firstName']
@@ -89,7 +84,7 @@ def newcustomerAcc():
         response1 = make_response({'success': register})
         response1.status_code = 200
         return response1
-    except Error as e:
+    except Exception as e:
         print(e)
 
     data = {'g': 'gg'}

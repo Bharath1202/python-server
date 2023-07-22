@@ -1,6 +1,5 @@
 from flask import request, make_response
 from service import database
-from pyodbc import Error
 from helpers import token
 from helpers import commonErrors
 import cryptocode
@@ -92,7 +91,7 @@ def loginForm():
                     response = make_response({'result': invalid})
                     response.status_code = 400
                     return response
-    except Error as e:
+    except Exception as e:
         response = make_response({'Invalid': invalid})
         response.status_code = 409
         return response

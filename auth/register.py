@@ -1,5 +1,4 @@
 from service import database
-from pyodbc import Error
 from flask import request, make_response
 from helpers import commonErrors
 from random_object_id import generate
@@ -20,8 +19,8 @@ try:
     data = cursor.fetchall()
     for i in data:
         emailArray.append(i[1])
-except Error as e:
-    print('e', e)
+except Exception as e:
+    print(e)
 
 
 def reg():
@@ -34,9 +33,8 @@ def reg():
         mobileNumber varchar(10))"""
         cursor.execute(table)
         cursor.commit()
-    except Error as e:
+    except Exception as e:
         print(e)
-
     res = request.json
     userName = res['userName']
     email = res['email']
@@ -62,7 +60,7 @@ def reg():
             return response
         else:
             print('out')
-    except Error as err:
+    except Exception as err:
         response = make_response({'result': err})
         response.status_code = 409
         return response
@@ -74,7 +72,7 @@ def reg():
             response = make_response({'result': register})
             response.status_code = 200
             return response
-    except Error as err:
+    except Exception as err:
         response = make_response({'result': err})
         response.status_code = 409
         return response
