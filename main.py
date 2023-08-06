@@ -6,7 +6,7 @@ from auth import register, login, resetPassword, newpassword
 import pandas as pd
 import datetime
 from account import accountRegister, getRegisterAccount, accountStatus
-from bank import bank
+from bank import bank, getBank
 from helpers import commonErrors
 from customerAccount import cutomer, getCustomerAccount
 from datetime import datetime
@@ -150,6 +150,12 @@ def getSingleCusAcc():
 def registerBankAcc():
     return_bank = bank.newBank()
     return return_bank
+
+
+@app.route('/getAllBank', methods=['GET'])
+def getAllBankAcc():
+    return_get_bank = getBank.getAllBank()
+    return return_get_bank
 
 
 if __name__ == "__main__":
