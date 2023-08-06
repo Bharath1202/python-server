@@ -80,6 +80,8 @@ def newcustomerAcc():
             cusId = i[0]
             delete_account_register = f"""delete from account_Register where _id='{cusId}'"""
             cursor.execute(delete_account_register)
+            delete_account_register1 = f"""delete from account_Register where mobileBumber='{mobile}'"""
+            cursor.execute(delete_account_register1)
             cursor.commit()
         response1 = make_response({'success': register})
         response1.status_code = 200

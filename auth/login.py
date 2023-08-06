@@ -62,16 +62,17 @@ def loginForm():
                     return response
         else:
             loginType = "user"
-            findData = f"""select * from customer_account where email='{email}' """
+            findData = f"""select * from register where email='{email}' """
             cursor.execute(findData)
             var = cursor.fetchall()
             for i in var:
                 print(i)
-                userEmail = i[6]
-                userPassword = i[20]
+                userEmail =  i[2]
+                userPassword =  i[3]
+                responsePassword1 = cryptocode.decrypt(userPassword, "password")
                 print(userEmail)
                 if len(var) > 0:
-                    if userEmail == email and userPassword == password:
+                    if userEmail == email and responsePassword1 == password:
                         access = token.create_access_token(data={'email': email})
                         responseData = {
                             "userDetails": userData,
