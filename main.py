@@ -155,6 +155,7 @@ def registerBankAcc():
 @app.route('/getAllBank', methods=['GET'])
 def getAllBankAcc():
     return_get_bank = getBank.getAllBank()
+    print(return_get_bank)
     return return_get_bank
 
 
