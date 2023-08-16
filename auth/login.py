@@ -48,7 +48,6 @@ def loginForm():
                             "tokenType": 'Bearer',
                             "loginType": loginType
                         }
-                        print(responseData)
                         response = make_response({'result': responseData})
                         response.status_code = 200
                         return response
@@ -62,25 +61,37 @@ def loginForm():
                     return response
         else:
             loginType = "user"
-            findData = f"""select * from register where email='{email}' """
+            findData = f"""select _id,firstName,lastName,age,dateOfBirth,email,password,mobileNumber,address,userImage,bankName from customer_account where email='{email}' """
             cursor.execute(findData)
             var = cursor.fetchall()
             for i in var:
-                print(i)
-                userEmail =  i[2]
-                userPassword =  i[3]
+                user = [
+                    {
+                        '_id': i[0],
+                        'firstName': i[1],
+                        'lastName': i[2],
+                        'age': i[3],
+                        'DOB': i[4],
+                        'email': i[5],
+                        "mobileNumber": i[7],
+                        'address': i[8],
+                        'bankName': i[9],
+                        'userImage': i[10]
+                    }
+                ]
+            # print(user)
+                userEmail = i[5]
+                userPassword = i[6]
                 responsePassword1 = cryptocode.decrypt(userPassword, "password")
-                print(userEmail)
                 if len(var) > 0:
                     if userEmail == email and responsePassword1 == password:
                         access = token.create_access_token(data={'email': email})
                         responseData = {
-                            "userDetails": userData,
+                            "userDetails": user,
                             "token": access,
                             "tokenType": 'Bearer',
                             "loginType": loginType
                         }
-                        print(responseData)
                         response = make_response({'result': responseData})
                         response.status_code = 200
                         return response
@@ -92,9 +103,10 @@ def loginForm():
                     response = make_response({'result': invalid})
                     response.status_code = 400
                     return response
+
     except Exception as e:
         response = make_response({'Invalid': invalid})
         response.status_code = 409
         return response
-    data={'f':'f'}
+    data = {'f': 'f'}
     return data

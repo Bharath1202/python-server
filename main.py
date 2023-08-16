@@ -45,16 +45,15 @@ def call():
 
 def verify():
     try:
-        getData = f"""select * from account_Register"""
+        getData = f"""select * from customer_account"""
         cursor.execute(getData)
         customerId = cursor.fetchall()
         for i in customerId:
             id = i[0]
-            registerDate = i[16]
+            registerDate = i[17]
             date = pd.Timestamp(registerDate)
             verifyDate = pd.Timedelta(datetime.now() - date).seconds / 30
-            print(verifyDate)
-            if verifyDate > 2792:
+            if verifyDate > 20:
                 dataBase = f"""update customer_account set status='verify' where _id='{id}'"""
                 cursor.execute(dataBase)
                 cursor.commit()
@@ -63,7 +62,7 @@ def verify():
     Timer(5, verify).start()
 
 
-# verify()
+verify()
 # def getGameData():
 #     gameData = f"""select * from gameTable"""
 #     cursor.execute(gameData)
@@ -140,7 +139,7 @@ def getCusAcc():
     getCustomerAcc = getCustomerAccount.getRegisterCsutomerAcc()
     return getCustomerAcc
 
-
+@app.route('/getCustomerAccount', methods=['PUT'])
 def getSingleCusAcc():
     getSingleCustomerAcc = getCustomerAccount.getSingleCustomerAccount()
     return getSingleCustomerAcc

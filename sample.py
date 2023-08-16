@@ -2,9 +2,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 import time
-from plyer import notification
-from gtts import gTTS
-from playsound import playsound
+
 appPassword = 'wiuriapxdbbwisut'
 # gTTS('Hello Surndhar').save('surenshar.mp3')
 context = ssl.create_default_context()
