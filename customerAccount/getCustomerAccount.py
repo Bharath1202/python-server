@@ -52,8 +52,8 @@ def getSingleCustomerAccount():
         for i in value:
             id = i['value']
             getData = f"""select customer._id,customer.accountNumber,customer.firstName,customer.lastName,
-            customer.mobileNumber,b.bankName,customer.ifscCode,customer.userImage from customer_account as customer
-            left join bank as b ON customer.bankName = b._id where customer._id = '{id}'"""
+            customer.mobileNumber,b._id as bankId,b.bankName,customer.ifscCode,customer.userImage from customer_account as customer
+            left join bank as b ON customer.bankName = b._id where customer._id =  '{id}'"""
             cursor.execute(getData)
             detail = cursor.fetchall()
             for i in detail:
@@ -63,9 +63,9 @@ def getSingleCustomerAccount():
                     "firstName": i[2],
                     "lastName": i[3],
                     "mobileNumber": i[4],
-                    "bankName": i[5],
-                    "ifscCode": i[6],
-                    "userImage": i[7],
+                    "bank": [{'bankId':i[5],'bankName':i[6]}],
+                    "ifscCode": i[7],
+                    "userImage": i[8],
                 }
             singlecutomerAccArray.append(res)
             response1 = make_response({'result': singlecutomerAccArray})

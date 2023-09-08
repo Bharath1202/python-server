@@ -6,7 +6,7 @@ from auth import register, login, resetPassword, newpassword
 import pandas as pd
 import datetime
 from account import accountRegister, getRegisterAccount, accountStatus
-from bank import bank, getBank
+from bank import bank, getBank, deposit, withdraw
 from helpers import commonErrors
 from customerAccount import cutomer, getCustomerAccount
 from datetime import datetime
@@ -63,6 +63,8 @@ def verify():
 
 
 verify()
+
+
 # def getGameData():
 #     gameData = f"""select * from gameTable"""
 #     cursor.execute(gameData)
@@ -139,6 +141,7 @@ def getCusAcc():
     getCustomerAcc = getCustomerAccount.getRegisterCsutomerAcc()
     return getCustomerAcc
 
+
 @app.route('/getCustomerAccount', methods=['PUT'])
 def getSingleCusAcc():
     getSingleCustomerAcc = getCustomerAccount.getSingleCustomerAccount()
@@ -156,6 +159,24 @@ def getAllBankAcc():
     return_get_bank = getBank.getAllBank()
     print(return_get_bank)
     return return_get_bank
+
+
+@app.route('/deposit', methods=['POST'])
+def depositAmount():
+    amount = deposit.deposit()
+    return amount
+
+
+@app.route('/getAllDeposit', methods=['GET'])
+def getdepositAmount():
+    getamount = deposit.getDeposit()
+    return getamount
+
+
+@app.route('/withdraw', methods=['POST'])
+def depositAmount():
+    withdrawamount = withdraw.withdraw()
+    return withdrawamount
 
 
 if __name__ == "__main__":
