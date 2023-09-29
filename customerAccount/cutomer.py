@@ -96,3 +96,20 @@ def newcustomerAcc():
 
     data = {'g': 'gg'}
     return data
+
+def uploadImage():
+    data = []
+    res = request.json
+    userId=res['id']
+    image=res['image']
+    try:
+        update = f"""update customer_account set userImage = '{image}' where _id='{userId}'"""
+        cursor.execute(update)
+        cursor.commit()
+        response1 = make_response({'result': 'success'})
+        response1.status_code = 200
+        return response1
+    except Exception as e:
+        print(e)
+    d = {'l':'p'}
+    return d

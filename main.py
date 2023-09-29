@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
 from waitress import serve
+
+import customerAccount.cutomer
 from service import database
 from auth import register, login, resetPassword, newpassword
 import pandas as pd
@@ -28,19 +30,20 @@ def call():
     otpData = f"""select * from OTP"""
     cursor.execute(otpData)
     var = cursor.fetchall()
-    for i in var:
-        time1 = i[2]
-        validTimeId = i[0]
-        present_time = pd.Timestamp(time1)
-        data = pd.Timedelta(datetime.datetime.now() - present_time).seconds / 60
-        print(data)
-        if data > 1:
-            drop_dataBase = f"""delete from OTP where ID='{validTimeId}'"""
-            cursor.execute(drop_dataBase)
-            cursor.commit()
-        else:
-            print('out')
-    Timer(5, call).start()
+    if(len(var) > 0):
+        for i in var:
+            time1 = i[2]
+            validTimeId = i[0]
+            present_time = pd.Timestamp(time1)
+            data = pd.Timedelta(datetime.datetime.now() - present_time).seconds / 60
+            print(data)
+            if data > 1:
+                drop_dataBase = f"""delete from OTP where ID='{validTimeId}'"""
+                cursor.execute(drop_dataBase)
+                cursor.commit()
+            else:
+                print('out')
+        Timer(5, call).start()
 
 
 def verify():
@@ -172,11 +175,14 @@ def getdepositAmount():
     getamount = deposit.getDeposit()
     return getamount
 
-
-@app.route('/withdraw', methods=['POST'])
-def depositAmount():
-    withdrawamount = withdraw.withdraw()
-    return withdrawamount
+@app.route('/uploadImage', methods=['POST'])
+def uploadImg():
+    image = cutomer.uploadImage()
+    return image
+# @app.route('/withdraw', methods=['POST'])
+# def depositAmount():
+#     withdrawamount = withdraw.withdraw()
+#     return withdrawamount
 
 
 if __name__ == "__main__":

@@ -67,7 +67,7 @@ def getSingleCustomerAccount():
                     "ifscCode": i[7],
                     "userImage": i[8],
                 }
-            singlecutomerAccArray.append(res)
+                singlecutomerAccArray.append(res)
             response1 = make_response({'result': singlecutomerAccArray})
             response1.status_code = 200
             return response1

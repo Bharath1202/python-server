@@ -64,6 +64,7 @@ def loginForm():
             findData = f"""select _id,firstName,lastName,age,dateOfBirth,email,password,mobileNumber,address,userImage,bankName from customer_account where email='{email}' """
             cursor.execute(findData)
             var = cursor.fetchall()
+            print('dddd', var)
             for i in var:
                 user = [
                     {
