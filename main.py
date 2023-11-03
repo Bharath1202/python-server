@@ -30,7 +30,7 @@ def call():
     otpData = f"""select * from OTP"""
     cursor.execute(otpData)
     var = cursor.fetchall()
-    if(len(var) > 0):
+    if (len(var) > 0):
         for i in var:
             time1 = i[2]
             validTimeId = i[0]
@@ -175,14 +175,17 @@ def getdepositAmount():
     getamount = deposit.getDeposit()
     return getamount
 
+
 @app.route('/uploadImage', methods=['POST'])
 def uploadImg():
     image = cutomer.uploadImage()
     return image
-# @app.route('/withdraw', methods=['POST'])
-# def depositAmount():
-#     withdrawamount = withdraw.withdraw()
-#     return withdrawamount
+
+
+@app.route('/withdraw', methods=['POST'])
+def withdrawAmt():
+    withdrawamount = withdraw.withdraw()
+    return withdrawamount
 
 
 if __name__ == "__main__":

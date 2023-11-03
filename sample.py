@@ -7,12 +7,11 @@ appPassword = 'wiuriapxdbbwisut'
 # gTTS('Hello Surndhar').save('surenshar.mp3')
 context = ssl.create_default_context()
 v = "viveka@upturntechnology.com"
-g = "guganathanyogi1997@gmail.com"
+suriya = "suriya.d@atandra.in"
 g1 = "guganathan@upturntechnology.com"
-emailArray = [g,g1]
+# emailArray = [g,g1]
 
-t = "gayathri@upturntechnology.com"
-b = "bharathaustin403@gmail.com"
+
 sender_email = 'noheavenforyours@gmail.com'
 e = EmailMessage()
 e['From'] = "noheavenforyours@gmail.com"
@@ -25,7 +24,7 @@ for i in range(1):
     e.set_content(body)
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smpt:
         smpt.login(sender_email, appPassword)
-        smpt.sendmail(sender_email, g, e.as_string())
+        smpt.sendmail(sender_email, suriya, e.as_string())
 
 # def notify():
 #     while True:

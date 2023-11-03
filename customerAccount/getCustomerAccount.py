@@ -1,9 +1,12 @@
 from service import database
 from flask import Flask, request,make_response
+from helpers import commonErrors
 
 pmsql = database.database()
 cursor = pmsql.cursor()
 
+for i in commonErrors.errors:
+    invalid = i['error']['invalidEmail']
 
 def getRegisterCsutomerAcc():
     customeraccArray = []
@@ -72,7 +75,7 @@ def getSingleCustomerAccount():
             response1.status_code = 200
             return response1
     except Exception as e:
-        response = make_response({'result': e})
+        response = make_response({'result': invalid})
         response.status_code = 400
         return response
     data = {'result': 'response'}

@@ -52,12 +52,20 @@ def reg():
     }
     try:
         if len(emailArray) == 0:
-            insert = f"""insert into register(_id,userName,email,password,mobileNumber) values('{id}','{userName}','{email}','{hash_password}',{mobileNumber})"""
-            cursor.execute(insert)
-            cursor.commit()
-            response = make_response({'result': register})
-            response.status_code = 200
-            return response
+            if email == "admin@gmail.com":
+                insert = f"""insert into register(_id,userName,email,password,mobileNumber) values('{id}','{userName}','{email}','{hash_password}',{mobileNumber})"""
+                cursor.execute(insert)
+                cursor.commit()
+                response = make_response({'result': register})
+                response.status_code = 200
+                return response
+            else:
+                insert = f"""insert into register(_id,userName,email,password,mobileNumber) values('{id}','{userName}','{email}','{hash_password}',{mobileNumber})"""
+                cursor.execute(insert)
+                cursor.commit()
+                response = make_response({'result': register})
+                response.status_code = 200
+                return response
         else:
             print('out')
     except Exception as err:

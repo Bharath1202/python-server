@@ -21,7 +21,6 @@ def loginForm():
     res = request.json
     email = res['email']
     password = res['password']
-    loginType = ''
     try:
         if email == "admin@gmail.com":
             loginType = 'admin'
@@ -61,7 +60,8 @@ def loginForm():
                     return response
         else:
             loginType = "user"
-            findData = f"""select _id,firstName,lastName,age,dateOfBirth,email,password,mobileNumber,address,userImage,bankName from customer_account where email='{email}' """
+            findData = f"""select _id,firstName,lastName,age,dateOfBirth,email,password,mobileNumber,address,
+            userImage,bankId from customer_account where email='{email}'"""
             cursor.execute(findData)
             var = cursor.fetchall()
             print('dddd', var)
@@ -76,7 +76,7 @@ def loginForm():
                         'email': i[5],
                         "mobileNumber": i[7],
                         'address': i[8],
-                        'bankName': i[9],
+                        'bankId': i[9],
                         'userImage': i[10]
                     }
                 ]
@@ -106,7 +106,7 @@ def loginForm():
                     return response
 
     except Exception as e:
-        response = make_response({'Invalid': invalid})
+        response = make_response({'Invalid': e})
         response.status_code = 409
         return response
     data = {'f': 'f'}

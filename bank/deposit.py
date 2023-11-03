@@ -12,11 +12,12 @@ cursor = pmsql.cursor()
 
 def deposit():
     res = request.json
+    amount = 0
+    getamt = 0
     customerId = res['customerId']
     bankId = res['bankId']
     totalamount = int(res['depositAmount'])
     date = datetime.datetime.now()
-    print('ddd', date)
     try:
         deposits = f"""create table deposit(id varchar(100),customerId varchar(100),bankId varchar(100),depositAmount varchar(100),
         date varchar(100))"""
@@ -25,7 +26,14 @@ def deposit():
     except Exception as e:
         print(e)
     try:
-        insertAmount = f"""insert into deposit(id,customerId,bankId,depositAmount,date) values('{id}','{customerId}','{bankId}',{totalamount},'{date}')"""
+        getamount = f"""select depositAmount from deposit where customerId='{customerId}'"""
+        cursor.execute(getamount)
+        amt = cursor.fetchall()
+        for i in amt:
+            getamt = int(i[0])
+        amount = totalamount + getamt
+        insertAmount = f""" update deposit set depositAmount = {amount} if @@ROWCOUNT = 0 
+        insert into deposit(id,customerId,bankId,depositAmount,date) values('{id}','{customerId}','{bankId}',{totalamount},'{date}')"""
         cursor.execute(insertAmount)
         cursor.commit()
         response = make_response({'result': 'Save Successfully'})
