@@ -3,8 +3,10 @@ from service import database
 from helpers import commonErrors
 from random_object_id import generate
 from datetime import datetime
+
 date = datetime.now()
 import cryptocode
+
 id = generate()
 
 for i in commonErrors.errors:
@@ -15,7 +17,6 @@ for i in commonErrors.errors:
 
 pmsql = database.database()
 cursor = pmsql.cursor()
-
 
 
 def newcustomerAcc():
@@ -97,11 +98,11 @@ def newcustomerAcc():
     data = {'g': 'gg'}
     return data
 
+
 def uploadImage():
-    data = []
     res = request.json
-    userId=res['id']
-    image=res['image']
+    userId = res['id']
+    image = res['image']
     try:
         update = f"""update customer_account set userImage = '{image}' where _id='{userId}'"""
         cursor.execute(update)
@@ -111,5 +112,5 @@ def uploadImage():
         return response1
     except Exception as e:
         print(e)
-    d = {'l':'p'}
+    d = {'l': 'p'}
     return d

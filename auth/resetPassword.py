@@ -38,7 +38,7 @@ def opt():
         registerData = cursor.fetchall()
         if len(registerData) > 0:
             for i in registerData:
-                if i[1] == sendEmail:
+                if i[2] == sendEmail:
                     emailAppPassword = appPassword
                     sender_email = 'bharathbharat2412@gmail.com'
                     body = f"""This OTP is valid for 1 minutes {otp}"""

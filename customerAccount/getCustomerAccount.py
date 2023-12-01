@@ -1,5 +1,5 @@
 from service import database
-from flask import Flask, request,make_response
+from flask import Flask, request, make_response
 from helpers import commonErrors
 
 pmsql = database.database()
@@ -7,6 +7,7 @@ cursor = pmsql.cursor()
 
 for i in commonErrors.errors:
     invalid = i['error']['invalidEmail']
+
 
 def getRegisterCsutomerAcc():
     customeraccArray = []
@@ -23,7 +24,7 @@ def getRegisterCsutomerAcc():
                 "dateOfBirth": i[4],
                 "gender": i[5],
                 "email": i[6],
-                "password":i[7],
+                "password": i[7],
                 "mobileNumber": i[8],
                 "alternateNumber": i[9],
                 "martialStatus": i[10],
@@ -33,10 +34,10 @@ def getRegisterCsutomerAcc():
                 "pincode": i[14],
                 "userImage": i[15],
                 "status": i[16],
-                "registerDate":i[17],
-                "bankName":i[18],
-                "bankAccno":i[19],
-                "ifscCode":i[20]
+                "registerDate": i[17],
+                "bankName": i[18],
+                "bankAccno": i[19],
+                "ifscCode": i[20]
             }
             customeraccArray.append(res)
         data = {'result': customeraccArray}
@@ -56,7 +57,7 @@ def getSingleCustomerAccount():
             id = i['value']
             getData = f"""select customer._id,customer.accountNumber,customer.firstName,customer.lastName,
             customer.mobileNumber,b._id as bankId,b.bankName,customer.ifscCode,customer.userImage from customer_account as customer
-            left join bank as b ON customer.bankName = b._id where customer._id =  '{id}'"""
+            left join bank as b ON customer.bankId = b._id where customer._id =  '{id}'"""
             cursor.execute(getData)
             detail = cursor.fetchall()
             for i in detail:
@@ -66,7 +67,7 @@ def getSingleCustomerAccount():
                     "firstName": i[2],
                     "lastName": i[3],
                     "mobileNumber": i[4],
-                    "bank": [{'bankId':i[5],'bankName':i[6]}],
+                    "bank": [{'bankId': i[5], 'bankName': i[6]}],
                     "ifscCode": i[7],
                     "userImage": i[8],
                 }

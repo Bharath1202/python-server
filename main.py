@@ -6,7 +6,6 @@ import customerAccount.cutomer
 from service import database
 from auth import register, login, resetPassword, newpassword
 import pandas as pd
-import datetime
 from account import accountRegister, getRegisterAccount, accountStatus
 from bank import bank, getBank, deposit, withdraw
 from helpers import commonErrors
@@ -35,7 +34,7 @@ def call():
             time1 = i[2]
             validTimeId = i[0]
             present_time = pd.Timestamp(time1)
-            data = pd.Timedelta(datetime.datetime.now() - present_time).seconds / 60
+            data = pd.Timedelta(datetime.now() - present_time).seconds / 60
             print(data)
             if data > 1:
                 drop_dataBase = f"""delete from OTP where ID='{validTimeId}'"""
@@ -44,6 +43,9 @@ def call():
             else:
                 print('out')
         Timer(5, call).start()
+
+
+call()
 
 
 def verify():
@@ -100,7 +102,7 @@ def opt():
     return otpReturn
 
 
-call()
+# call()
 
 
 @app.route('/newPassword', methods=['POST'])

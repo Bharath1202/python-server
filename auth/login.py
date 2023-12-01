@@ -64,7 +64,6 @@ def loginForm():
             userImage,bankId from customer_account where email='{email}'"""
             cursor.execute(findData)
             var = cursor.fetchall()
-            print('dddd', var)
             for i in var:
                 user = [
                     {

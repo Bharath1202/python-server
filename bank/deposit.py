@@ -50,8 +50,8 @@ def getDeposit():
     get = "select * from deposit"
     cursor.execute(get)
     data = cursor.fetchall()
-    try:
-        if len(data) > 0:
+    if len(data) > 0:
+        try:
             for i in data:
                 res = {
                     "amount": i[3],
@@ -59,7 +59,7 @@ def getDeposit():
                 }
                 getDepositArray.append(res)
             return getDepositArray
-    except Exception as e:
-        print(e)
+        except Exception as e:
+           print(e)
     data = {'result': 'error'}
     return data
